@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd        http://code.alibabatech.com/schema/dubbo        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!--当前项目在整个分布式架构里面的唯一名称，计算依赖关系的标签 -->
+	<dubbo:application name="dubbo-consumer" owner="cx" />
+
+	<!--dubbo这个服务所要暴露的服务地址所对应的注册中心 -->
+	<dubbo:registry
+		address="zookeeper://127.0.0.1:2181?backup=127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183" />
+
+	<!--生成一个远程服务的调用代理 check默认true启动检查所依赖服务是否正常  async="true"异步hessian协议不支持异步-->
+	<dubbo:reference id="orderService" interface="org.cx.OrderService" check="false" version="2.0" loadbalance="leastactive"/>
+	
+	<dubbo:reference id="orderQueryService" interface="org.cx.OrderQueryService" check="false" protocol="hessian"/>
+
+</beans>
